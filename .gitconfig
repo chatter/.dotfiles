@@ -1,13 +1,30 @@
+[commit]
+	gpgsign = true
+
+[core]
+  editor = nvim
+  pager = delta
+	trustctime = false # https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+
+[init]
+  defaultBranch = main
+
+[interactive]
+  diffFilter = delta --color-only
+
+[merge]
+  conflictStyle = zdiff3
+
+[tag]
+	gpgSign = true
+
 [user]
 	name = Curtis Hatter
 	email = mitchell.hatter@gmail.com
 	signingkey = FC02A8365EAC827D
-[commit]
-	gpgsign = true
-[tag]
-	gpgSign = true
-[init]
-  defaultBranch = main
-[core]
-  editor = nvim
-	trustctime = false # https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+
+# 3rd Party Tools
+
+[delta] # https://github.com/dandavison/delta
+  navigate = true
+  side-by-side = true
