@@ -1,1 +1,2 @@
 .dotfiles
+*.oauth2-token-file

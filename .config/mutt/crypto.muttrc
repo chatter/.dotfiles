@@ -1,0 +1,10 @@
+# Crypto Settings
+set crypt_autosign=yes
+set crypt_replysign=yes
+set crypt_replysignencrypted=yes
+set crypt_replyencrypt=yes
+set crypt_use_gpgme=yes
+set crypt_verify_sig=yes
+set pgp_sign_as=FC02A8365EAC827D
+set pgp_timeout=60
+set pgp_use_gpg_agent=yes

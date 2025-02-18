@@ -1,0 +1,26 @@
+set my_reverse_domain = "com.gmail.mitchell.hatter"
+
+# IMAP
+set imap_user = mitchell.hatter@gmail.com
+set imap_authenticators = "oauthbearer:xoauth2"
+set imap_oauth_refresh_command = "~/.config/mutt/mutt_oauth2.py ~/.config/mutt/accounts/$my_reverse_domain.oauth2-token-file"
+set from = $imap_user
+set hostname = gmail.com
+set folder = imaps://$imap_user@imap.gmail.com/
+set spoolfile = +INBOX
+
+set record = +"[Gmail]/Sent Mail"
+set postponed = +"[Gmail]/Drafts"
+set mbox = +"[Gmail]/All Mail"
+
+set header_cache = "~/.config/mutt/cache/$my_reverse_domain/headers"
+set message_cachedir = "~/.config/mutt/cache/$my_reverse_domain/bodies"
+set certificate_file = "~/.config/mutt/certificates/$my_reverse_domain"
+
+# SMTP
+set smtp_url = "smtp://$imap_user@smtp.gmail.com:587/"
+set ssl_force_tls = yes # Require encrypted connection
+set smtp_authenticators = ${imap_authenticators}
+set smtp_oauth_refresh_command = ${imap_oauth_refresh_command}
+
+account-hook $folder "set imap_user=$imap_user"

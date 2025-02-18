@@ -1,0 +1,29 @@
+# Keybindings
+
+# Unbind some defaults
+bind index <esc>V noop
+bind index <esc>v noop
+
+# Vim Style Navigation
+bind pager <Left> exit
+bind pager h exit
+
+bind generic,index <Return> select-entry
+bind generic,index <Right> select-entry
+bind generic,index l select-entry
+
+bind generic,index <Down> next-entry
+bind generic,index j next-entry
+bind pager j next-line
+
+bind generic,index <Up> previous-entry
+bind generic,index k previous-entry
+bind pager k previous-line
+
+bind generic,index gg first-entry
+bind pager gg top
+
+bind generic,index G last-entry
+bind pager G bottom
+
+bind index / limit

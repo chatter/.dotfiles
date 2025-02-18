@@ -1,0 +1,14 @@
+# Folder Hooks
+folder-hook 'account.com.gmail.mitchell.hatter' 'source $my_muttrc_dir/accounts/com.gmail.mitchell.hatter'
+folder-hook 'account.com.ascendum.curtis.hatter' 'source $my_muttrc_dir/accounts/com.ascendum.curtis.hatter'
+folder-hook 'account.com.icloud.curtis.hatter' 'source $my_muttrc_dir/accounts/com.icloud.curtis.hatter'
+folder-hook 'account.com.redhawk-tech.chatter' 'source $my_muttrc_dir/accounts/com.redhawk-tech.chatter'
+
+# Macros
+macro index <f2> '<sync-mailbox><enter-command>source $my_muttrc_dir/accounts/com.gmail.mitchell.hatter<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source $my_muttrc_dir/accounts/com.ascendum.curtis.hatter<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source $my_muttrc_dir/accounts/com.icloud.curtis.hatter<enter><change-folder>!<enter>'
+macro index <f5> '<sync-mailbox><enter-command>source $my_muttrc_dir/accounts/com.redhawk-tech.chatter<enter><change-folder>!<enter>'
+
+# Default Account
+source $my_muttrc_dir/accounts/com.gmail.mitchell.hatter

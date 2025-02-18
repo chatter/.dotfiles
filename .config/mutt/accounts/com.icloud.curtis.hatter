@@ -1,0 +1,26 @@
+source "gpg -dq $my_muttrc_dir/accounts/passwords.gpg |"
+set my_reverse_domain = "com.icloud.curtis.hatter"
+
+# IMAP
+set imap_user = curtis.hatter
+set imap_pass = $my_apple_pass
+set imap_authenticators="gssapi:login"
+set from = $imap_user
+set hostname = icloud.com
+set folder = imaps://$imap_user@imap.mail.me.com/
+set spoolfile = +INBOX
+
+set record = +Sent
+set postponed = +Drafts
+
+set header_cache = "~/.config/mutt/cache/$my_reverse_domain/headers"
+set message_cachedir = "~/.config/mutt/cache/$my_reverse_domain/bodies"
+set certificate_file = "~/.config/mutt/certificates/$my_reverse_domain"
+
+# SMTP
+set smtp_url = "smtp://$imap_user@smtp.mail.me.com:587/"
+set smtp_pass = $imap_pass
+set ssl_force_tls = yes # Require encrypted connection
+set smtp_authenticators = 'gssapi:login'
+
+account-hook $folder "set imap_user=$imap_user"
