@@ -3,6 +3,7 @@ fish_config theme choose "tokyonight_moon"
 if status is-interactive
   abbr --add n nvim
   abbr --add vim nvim
+  abbr --add cat bat
 
   set -l mise (which mise)
   if [ "$mise" ]
