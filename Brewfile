@@ -12,6 +12,8 @@ brew "mutt"
 brew "neovim"
 brew "pinentry-mac"
 brew "ripgrep"
+brew "taskwarrior"           # cli based todo list manager
+brew "timewarrior"           # cli based time tracking
 cask "docker"
 cask "font-fira-code"        # required for ~/.config/kitty/kitty.conf
 cask "font-hack-nerd-font"   # required for ~/.config/kitty/kitty.conf
