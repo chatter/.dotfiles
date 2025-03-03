@@ -1,10 +1,10 @@
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 [core]
   editor = nvim
   pager = delta
-	trustctime = false # https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+  trustctime = false # https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
 
 [init]
   defaultBranch = main
@@ -16,12 +16,12 @@
   conflictStyle = zdiff3
 
 [tag]
-	gpgSign = true
+  gpgSign = true
 
 [user]
-	name = Curtis Hatter
-	email = mitchell.hatter@gmail.com
-	signingkey = FC02A8365EAC827D
+  name = Curtis Hatter
+  email = mitchell.hatter@gmail.com
+  signingkey = 92C551C40BE98354
 
 # 3rd Party Tools
 
