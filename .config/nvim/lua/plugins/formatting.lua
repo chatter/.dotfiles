@@ -1,17 +1,19 @@
 local add, now = MiniDeps.add, MiniDeps.now
 
 now(function()
-  add({ source = 'stevearc/conform.nvim'})
+  add({ source = 'stevearc/conform.nvim' })
+  add({ source = 'zapling/mason-conform.nvim' })
+
   conform = require('conform')
 
   conform.setup(
     { formatters_by_ft =
-      { javascript  = { 'prettier' }
-      , typescript  = { 'prettier' }
-      , html        = { 'prettier' }
-      , htmlangular = { 'prettier' }
-      , json        = { 'prettier' }
-      , css         = { 'prettier' }
+      { javascript  = { 'prettierd' }
+      , typescript  = { 'prettierd' }
+      , html        = { 'prettierd' }
+      , htmlangular = { 'prettierd' }
+      , json        = { 'prettierd' }
+      , css         = { 'prettierd' }
       }
     }
   , { format_on_save =
@@ -44,4 +46,6 @@ now(function()
       end
     }
   )
+
+  require('mason-conform').setup()
 end)

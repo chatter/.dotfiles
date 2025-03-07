@@ -139,7 +139,7 @@ now(function()
   )
   require('mason').setup()
   require('mason-lspconfig').setup(
-    { ensure_installed = { 'vtsls', 'gopls', 'prettierd' }
+    { ensure_installed = { 'vtsls', 'gopls' }
     , handlers =
       { function(server_name)
           require('lspconfig')[server_name].setup({})

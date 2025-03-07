@@ -17,7 +17,7 @@ require('keymaps')
 require('mini.deps').setup({ path = { package = path_package } })
 
 require('plugins.lsp')
-require('plugins.formatting')
+require('plugins.formatting') -- should come after plugins.lsp
 require('plugins.mini')
 require('plugins.navigation')
 require('plugins.theme')
