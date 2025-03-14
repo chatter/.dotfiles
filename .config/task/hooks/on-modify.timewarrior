@@ -44,8 +44,7 @@ except AttributeError:
 
 
 def extract_tags_from(json_obj):
-    # Extract attributes for use as tags.
-    tags = [json_obj['description']]
+    tags = []
 
     if 'project' in json_obj:
         tags.append(json_obj['project'])
@@ -63,11 +62,18 @@ def extract_tags_from(json_obj):
 
 
 def extract_annotation_from(json_obj):
+    # Extract attributes for use as tags.
+    annotations = json_obj['description']
 
-    if 'annotations' not in json_obj:
-        return '\'\''
+    if 'annotations' in json_obj:
+        for a in json_obj['annotations']:
+            annotations += f"; {a['description']}"
 
-    return json_obj['annotations'][0]['description']
+    return annotations
+    # if 'annotations' not in json_obj:
+    #     return annotations
+    #
+    # return json_obj['annotations'][0]['description']
 
 
 def main(old, new):
@@ -96,11 +102,13 @@ def main(old, new):
             subprocess.call(['timew', 'untag', '@1'] + old_tags + [':yes'])
             subprocess.call(['timew', 'tag', '@1'] + new_tags + [':yes'])
 
-        old_annotation = extract_annotation_from(old)
-        new_annotation = extract_annotation_from(new)
-
-        if old_annotation != new_annotation:
-            subprocess.call(['timew', 'annotate', '@1', new_annotation])
+    # old_annotation = extract_annotation_from(old)
+    # new_annotation = extract_annotation_from(new)
+    #
+    # print("WTF")
+    # print(f"old: {old_annotation}")
+    # print(f"new: {new_annotation}")
+    subprocess.call(['timew', 'annotate', '@1', extract_annotation_from(new)])
 
 
 if __name__ == "__main__":
