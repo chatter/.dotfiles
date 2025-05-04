@@ -171,8 +171,28 @@ now(function()
   require('mason-lspconfig').setup(
     { ensure_installed = { 'denols', 'vtsls', 'gopls', 'elixirls' }
     , handlers =
-      { function(server_name)
-          require('lspconfig')[server_name].setup({})
+      { ['elixirls'] = function()
+          require('lspconfig').elixirls.setup(
+            { cmd = { vim.fn.stdpath("data") .. "/mason/packages/elixir-ls/language_server.sh" }
+            , on_attach = function(_client, _buf)
+                vim.api.nvim_create_autocmd("BufWritePre",
+                  { pattern = { "*.ex", "*.exs" }
+                  , callback = function()
+                      vim.lsp.buf.format({ async = false })
+                    end
+                  }
+                )
+              end
+            , settings =
+              { elixirLS =
+                { dialyzerEnabled = true
+                , fetchDeps = true -- Set true if you want LSP to run `mix deps.get`
+                , enableTestLenses = true
+                , suggestSpecs = true
+                }
+              }
+            }
+          )
         end
       , ['denols'] = function()
           require('lspconfig').denols.setup({ root_dir = require('lspconfig').util.root_pattern 'deno.json' })
@@ -186,12 +206,6 @@ now(function()
             end,
           })
         end
-      -- , ['vtsls'] = function()
-      --     require('lspconfig').vtsls.setup(
-      --       { settings = { completions = { completeFunctionCalls = true } } 
-      --       }
-      --     )
-      --   end
       , ['gopls'] = function()
           require('lspconfig').gopls.setup(
             { on_attach = function(_client, _buf)
@@ -226,8 +240,10 @@ now(function()
             }
           )
         end
+      , function(server_name)
+          require('lspconfig')[server_name].setup({})
+        end
       }
     }
   )
 end)
-
