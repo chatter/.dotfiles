@@ -113,21 +113,51 @@ now(function()
     'force', lspconfig_defaults.capabilities, require('cmp_nvim_lsp').default_capabilities()
   )
 
+  -- global fallback: shows message if no LSP is attached
+  vim.keymap.set("n", "<leader>ca", function()
+    vim.notify("LSP not attached in this buffer.", vim.log.levels.WARN)
+  end, { desc = "Code Action (LSP not attached)" })
+
+  vim.diagnostic.config({
+    virtual_text = false,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
+  })
+
+  vim.o.updatetime = 500
+  vim.api.nvim_create_autocmd("CursorHold", {
+    callback = function()
+      local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+      local diags = vim.diagnostic.get(0, { lnum = line })
+      if #diags > 0 then
+        vim.defer_fn(function()
+          vim.diagnostic.open_float(nil, { focusable = false, border = "rounded" })
+        end, 100)  -- small delay to let diagnostics update
+      end
+    end,
+  })
+
   vim.api.nvim_create_autocmd('LspAttach',
     { desc = 'LSP actions'
     , callback = function(event)
-        local opts = { buffer = event.buf }
-
-        vim.keymap.set('n',        'K',    '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-        vim.keymap.set('n',        'gd',   '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-        vim.keymap.set('n',        'gD',   '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-        vim.keymap.set('n',        'gi',   '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-        vim.keymap.set('n',        'go',   '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-        vim.keymap.set('n',        'gr',   '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-        vim.keymap.set('n',        'gs',   '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-        vim.keymap.set('n',        '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-        vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-        vim.keymap.set('n',        'ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+        local keybind = require('which-key').map_with_opts
+        keybind('n', '<leader>ca', vim.lsp.buf.code_action,       { buffer = event.buf, desc = 'Code Action',           icon = ''  })
+        keybind('n', '<leader>cr', vim.lsp.buf.rename,            { buffer = event.buf, desc = 'Rename Symbol',         icon = '✎'  })
+        keybind('n', '<leader>ch', vim.lsp.buf.hover,             { buffer = event.buf, desc = 'Hover Info',            icon = ''  })
+        keybind('n', '<leader>cs', vim.lsp.buf.signature_help,    { buffer = event.buf, desc = 'Signature Help',        icon = ''  })
+        keybind('n', '<leader>cd', vim.lsp.buf.definition,        { buffer = event.buf, desc = 'Go to Definition',      icon = ''  })
+        keybind('n', '<leader>cD', vim.lsp.buf.declaration,       { buffer = event.buf, desc = 'Go to Declaration',     icon = ''  })
+        keybind('n', '<leader>ci', vim.lsp.buf.implementation,    { buffer = event.buf, desc = 'Go to Implementation',  icon = ''  })
+        keybind('n', '<leader>ct', vim.lsp.buf.type_definition,   { buffer = event.buf, desc = 'Go to Type Definition', icon = ''  })
+        keybind('n', '<leader>cR', vim.lsp.buf.references,        { buffer = event.buf, desc = 'Find References',       icon = ''  })
+        keybind('n', '<leader>cn', vim.diagnostic.goto_next,      { buffer = event.buf, desc = 'Next Diagnostic',       icon = ''  })
+        keybind('n', '<leader>cp', vim.diagnostic.goto_prev,      { buffer = event.buf, desc = 'Previous Diagnostic',   icon = ''  })
+        keybind('n', '<leader>cl', vim.diagnostic.setloclist,     { buffer = event.buf, desc = 'Diagnostics (Loclist)', icon = ''  })
+        keybind('n', '<leader>cf', function()
+          vim.lsp.buf.format({ async = true })
+        end,                                                            { desc = 'Format Buffer',         icon = ''  }) -- paintbrush
       end
     }
   )
@@ -139,17 +169,29 @@ now(function()
   )
   require('mason').setup()
   require('mason-lspconfig').setup(
-    { ensure_installed = { 'vtsls', 'gopls' }
+    { ensure_installed = { 'denols', 'vtsls', 'gopls', 'elixirls' }
     , handlers =
       { function(server_name)
           require('lspconfig')[server_name].setup({})
         end
-      , ['vtsls'] = function()
-          require('lspconfig').vtsls.setup(
-            { settings = { completions = { completeFunctionCalls = true } } 
-            }
-          )
+      , ['denols'] = function()
+          require('lspconfig').denols.setup({ root_dir = require('lspconfig').util.root_pattern 'deno.json' })
         end
+      , ['vtsls'] = function()
+          require('lspconfig').vtsls.setup({
+            single_file_support = false,
+            root_dir = function()
+              return not vim.fs.root(0, { 'deno.json', 'deno.jsonc' })
+                and vim.fs.root(0, { 'tsconfig.json', 'package.json', 'jsconfig.json', 'bun.lockb', '.git' })
+            end,
+          })
+        end
+      -- , ['vtsls'] = function()
+      --     require('lspconfig').vtsls.setup(
+      --       { settings = { completions = { completeFunctionCalls = true } } 
+      --       }
+      --     )
+      --   end
       , ['gopls'] = function()
           require('lspconfig').gopls.setup(
             { on_attach = function(_client, _buf)
@@ -188,3 +230,4 @@ now(function()
     }
   )
 end)
+

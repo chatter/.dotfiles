@@ -11,13 +11,15 @@ end
 
 require('options')
 require('commands')
-require('keymaps')
 
 -- Set up `mini.deps` then load `plugins.x`
 require('mini.deps').setup({ path = { package = path_package } })
 
+require('plugins.which-key') -- should come first to pick up keymaps
+require('keymaps')
 require('plugins.lsp')
 require('plugins.formatting') -- should come after plugins.lsp
+require('plugins.syntax')
 require('plugins.mini')
 require('plugins.navigation')
 require('plugins.theme')

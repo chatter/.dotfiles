@@ -5,5 +5,6 @@ vim.o.shiftwidth = 2
 vim.o.expandtab = true
 vim.o.splitbelow = true
 vim.o.splitright = true
-vim.o.smartcase = true
+vim.o.ignorecase = true
+vim.o.smartcase = false
 vim.o.signcolumn = "yes" -- lsp related

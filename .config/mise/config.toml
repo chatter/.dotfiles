@@ -1,4 +1,6 @@
 [tools]
+erlang = "latest"
 go = "latest"
 node = "lts"
 python = "latest"
+elixir = "latest"
